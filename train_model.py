@@ -8,7 +8,7 @@ import mlflow
 
 # # Start mlflow run
 
-mlflow.set_experiment('predict-rider-count-2')
+mlflow.set_experiment('predict-rider-count')
 mlflow.start_run()
 mlflow.sklearn.autolog()
 
