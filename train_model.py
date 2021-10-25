@@ -1,11 +1,14 @@
 import pandas as pd
 from sklearn.linear_model import ElasticNet
 from sklearn.model_selection import GridSearchCV
+from sklearn.preprocessing import StandardScaler, OneHotEncoder, PolynomialFeatures
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
 import mlflow
 
 # # Start mlflow run
 
-mlflow.set_experiment('predict-rider-count')
+mlflow.set_experiment('predict-rider-count-2')
 mlflow.start_run()
 mlflow.sklearn.autolog()
 
@@ -26,10 +29,25 @@ test_labels = data_labels[486:]
 
 # Train model
 
-parameters = {'l1_ratio': [.1, .5, .7, .9, .95, .99, 1]}
-unfitted_estimator = ElasticNet(normalize = True, random_state = 288793)
-optimizer = GridSearchCV(unfitted_estimator, parameters)
-fitted_estimator = optimizer.fit(train_features, train_labels)
+one_hot_encoder = ColumnTransformer([('encoder', OneHotEncoder(), [0])], remainder='passthrough')
+polynomial_features = PolynomialFeatures(degree=2)
+normalizer = StandardScaler()
+estimator = ElasticNet(random_state = 288793)
+
+pipeline = Pipeline([
+#  ('one_hot_encoder', one_hot_encoder),
+#  ('polynomial_features', polynomial_features),
+  ('normalizer', normalizer),
+  ('estimator', estimator)
+])
+
+parameters = {'estimator__l1_ratio': [.1, .5, .9, .99, 1]}
+
+optimizer = GridSearchCV(pipeline, parameters)
+
+model = optimizer.fit(train_features, train_labels)
+model.score(train_features, train_labels)
+model.score(test_features, test_labels)
 
 # # End mlflow run
 
