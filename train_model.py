@@ -5,7 +5,7 @@ import mlflow
 
 # # Start mlflow run
 
-mlflow.set_experiment('bikeshare_v1')
+mlflow.set_experiment('predict-rider-count')
 mlflow.start_run()
 mlflow.sklearn.autolog()
 
