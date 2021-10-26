@@ -29,14 +29,10 @@ test_labels = data_labels[486:]
 
 # Train model
 
-one_hot_encoder = ColumnTransformer([('encoder', OneHotEncoder(), [0])], remainder='passthrough')
-polynomial_features = PolynomialFeatures(degree=2)
 normalizer = StandardScaler()
 estimator = ElasticNet(random_state = 288793)
 
 pipeline = Pipeline([
-#  ('one_hot_encoder', one_hot_encoder),
-#  ('polynomial_features', polynomial_features),
   ('normalizer', normalizer),
   ('estimator', estimator)
 ])
