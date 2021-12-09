@@ -5,10 +5,12 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder, PolynomialFeatu
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 import mlflow
+import mlflow.sklearn
+
 
 # # Start mlflow run
 
-
+mlflow.set_experiment('bikeshare')
 mlflow.start_run()
 mlflow.sklearn.autolog()
 
