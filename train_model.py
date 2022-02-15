@@ -48,8 +48,10 @@ parameters = {'estimator__l1_ratio': [.1, .5, .9, .99, 1]}
 optimizer = GridSearchCV(pipeline, parameters)
 
 model = optimizer.fit(train_features, train_labels)
-model.score(train_features, train_labels)
-model.score(test_features, test_labels)
+train_score = model.score(train_features, train_labels)
+mlflow.log_metric('train_score', train_score)
+test_score = model.score(test_features, test_labels)
+mlflow.log_metric('test_score', test_score)
 
 # # End mlflow run
 
